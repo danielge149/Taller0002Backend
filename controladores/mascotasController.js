@@ -16,10 +16,12 @@ const crear = (req,res)=>{
     //Usar Sequelize para crear el recurso
     mascotas.create(dataset).then((resultado)=>{
         res.status(200).json({
+            tipo: "success",
             mensaje: "Registro creado correctamente"
         })
     }).catch((err)=>{
         res.status(500).json({
+            tipo: "error",
             mensaje: `Error al crear el registro ::: ${err}`
         })
 
@@ -43,6 +45,7 @@ const buscarId = (req,res)=>{
         res.status(200).json(resultado);    
     }).catch((err)=>{
         res.status(500).json({
+            tipo: "error",
             mensaje: `Registro no encontrado ::: ${err}`
         });
     });
@@ -57,6 +60,7 @@ const buscar = (req, res)=>{
         res.status(200).json(resultado);    
     }).catch((err)=>{
         res.status(500).json({
+            tipo: "error",
             mensaje: `No se encontraron Registros ::: ${err}`
         });
     });
@@ -73,6 +77,7 @@ const actualizar = (req, res) => {
         .then((registroExistente) => {
             if (!registroExistente) {
                 return res.status(404).json({
+                    tipo: "success",
                     mensaje: "Registro no encontrado"
                 });
             }
@@ -80,6 +85,7 @@ const actualizar = (req, res) => {
             // El registro existe, ahora procedemos con la actualización
             if (!req.body.nombre && !req.body.edad) {
                 return res.status(400).json({
+                    tipo: "success",
                     mensaje: "No se encontraron datos para actualizar"
                 });
             }
@@ -90,17 +96,20 @@ const actualizar = (req, res) => {
             mascotas.update({ nombre, edad }, { where: { id } })
                 .then(() => {
                     res.status(200).json({
+                        tipo: "success",
                         mensaje: "Registro actualizado correctamente"
                     });
                 })
                 .catch((err) => {
                     res.status(500).json({
+                        tipo: "error",
                         mensaje: `Error al actualizar registro ::: ${err}`
                     });
                 });
         })
         .catch((err) => {
             res.status(500).json({
+                tipo: "error",
                 mensaje: `Error al verificar la existencia del registro ::: ${err}`
             });
         });
@@ -112,6 +121,7 @@ const eliminar=(req,res)=>{
     const id= req.params.id;
     if(id == null){
         res.status(203).json({
+            tipo: "success",
             mensaje: `El id no puede estar vacio`
         });
         return;
@@ -119,11 +129,13 @@ const eliminar=(req,res)=>{
     mascotas.destroy({where:{id}})
     .then((resultado)=>{
         res.status(200).json({
+            tipo: "success",
             mensaje: `Registro Eliminado`
         });
     })
     .catch((err)=>{
         res.status(500).json({
+            tipo: "error",
             mensaje: `Error al eliminar Registro ::: ${err}`
         });
     })

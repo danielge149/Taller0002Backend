@@ -2,9 +2,11 @@ import express from "express";
 import { routerMascotas } from "../rutas/mascotasRouter.js";
 import {db} from "../database/conexion.js";
 
+import cors from "cors";
+
 //Crear Instancia de Express
 const app = express();
-
+app.use(cors());
 //Middleware
 app.use(express.json());
 
